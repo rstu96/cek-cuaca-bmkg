@@ -53,27 +53,3 @@ Data prakiraan cuaca bersumber dari BMKG (Badan Meteorologi, Klimatologi,
 dan Geofisika) melalui API publik <https://data.bmkg.go.id/prakiraan-cuaca>.
 Wajib dicantumkan sebagai sumber data sesuai ketentuan BMKG.
 
-## Catatan Pengembangan
-
-- Kode ini dites secara manual (tanpa akses internet saat pembuatan), jadi
-  disarankan untuk dicoba jalankan dulu sebelum direkam videonya, siapa
-  tahu ada penyesuaian kecil yang diperlukan (misalnya field response API
-  BMKG berubah sewaktu-waktu).
-- Validasi kode wilayah masih sederhana (format regex). Bisa dikembangkan
-  lebih lanjut misalnya dengan dropdown pilihan wilayah, cache hasil
-  request, atau penanganan error yang lebih detail.
-
-## Panduan Submit Tugas
-
-1. **Source code**  upload folder ini ke GitHub (buat repository baru,
-   push semua file), lalu salin link repository-nya.
-2. **Video demo**  rekam layar (screen record) singkat yang menunjukkan:
-   - Menjalankan server (`php -S localhost:8000`)
-   - Membuka aplikasi di browser
-   - Mengisi kode wilayah dan menekan tombol "Cek Cuaca"
-   - Hasil prakiraan cuaca yang muncul
-   - (opsional) tunjukkan sekilas isi `api.php` sambil dijelaskan bagian
-     REST client & REST server-nya
-3. Upload video ke Google Drive, ubah izin akses jadi
-   **"Anyone with the link can view"**, lalu salin link-nya untuk
-   dikumpulkan bersama link GitHub.
