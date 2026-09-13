@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Prakiraan Cuaca - BMKG</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 16px;
+        background: #f4f6f5;
+        color: #1f2a24;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    p.subtitle { color: #556; margin-top: 0; }
+    .form-box {
+        background: #fff;
+        border: 1px solid #dfe3e0;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        gap: 8px;
+    }
+    input[type=text] {
+        flex: 1;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+    button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #2e7d32;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+    button:hover { background: #276328; }
+    #lokasi-info {
+        margin-top: 16px;
+        font-size: 0.95rem;
+        color: #333;
+    }
+    .hari-block {
+        margin-top: 16px;
+        background: #fff;
+        border: 1px solid #dfe3e0;
+        border-radius: 8px;
+        padding: 12px 16px;
+    }
+    .hari-block h3 { margin: 0 0 8px 0; font-size: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #eee; }
+    .error-box {
+        margin-top: 16px;
+        background: #fdecea;
+        border: 1px solid #f5c2c0;
+        color: #7a2822;
+        padding: 10px 14px;
+        border-radius: 6px;
+    }
+    footer {
+        margin-top: 32px;
+        font-size: 0.8rem;
+        color: #789;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<h1>Cek Prakiraan Cuaca</h1>
+<p class="subtitle">Tugas Akhir Pemrograman Terdistribusi — memanfaatkan REST API publik BMKG</p>
+
+<div class="form-box">
+    <input type="text" id="adm4" placeholder="Kode wilayah, contoh: 31.71.01.1001" value="31.71.01.1001">
+    <button onclick="cekCuaca()">Cek Cuaca</button>
+</div>
+
+<div id="hasil"></div>
+
+<footer>Sumber data: BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)</footer>
+
+<script>
+async function cekCuaca() {
+    const adm4 = document.getElementById('adm4').value.trim();
+    const hasilDiv = document.getElementById('hasil');
+    hasilDiv.innerHTML = '<p>Memuat data...</p>';
+
+    try {
+        const res = await fetch(`api.php?adm4=${encodeURIComponent(adm4)}`);
+        const json = await res.json();
+
+        if (!json.success) {
+            hasilDiv.innerHTML = `<div class="error-box">${json.message}</div>`;
+            return;
+        }
+
+        const lokasi = json.lokasi;
+        let html = '';
+
+        if (lokasi) {
+            html += `<div id="lokasi-info">
+                <strong>${lokasi.desa ?? '-'}, ${lokasi.kecamatan ?? '-'}</strong><br>
+                ${lokasi.kotkab ?? '-'}, ${lokasi.provinsi ?? '-'}
+            </div>`;
+        }
+
+        // json.cuaca adalah array per-hari, tiap hari berisi array prakiraan per-3 jam
+        json.cuaca.forEach((hari, idx) => {
+            html += `<div class="hari-block"><h3>Hari ke-${idx + 1}</h3><table>
+                <tr><th>Jam</th><th>Cuaca</th><th>Suhu</th><th>Kelembapan</th><th>Angin</th></tr>`;
+            hari.forEach(item => {
+                html += `<tr>
+                    <td>${item.local_datetime ?? '-'}</td>
+                    <td>${item.weather_desc ?? '-'}</td>
+                    <td>${item.t ?? '-'}&deg;C</td>
+                    <td>${item.hu ?? '-'}%</td>
+                    <td>${item.ws ?? '-'} km/j</td>
+                </tr>`;
+            });
+            html += `</table></div>`;
+        });
+
+        hasilDiv.innerHTML = html;
+    } catch (err) {
+        hasilDiv.innerHTML = `<div class="error-box">Terjadi kesalahan: ${err.message}</div>`;
+    }
+}
+
+// otomatis cek cuaca sekali saat halaman dibuka
+window.onload = cekCuaca;
+</script>
+
+</body>
+</html>
