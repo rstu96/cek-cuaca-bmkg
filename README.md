@@ -8,10 +8,10 @@ Klimatologi, dan Geofisika).
 
 Project ini sekaligus berperan sebagai **REST server** dan **REST client**:
 
-- **REST Client** — `api.php` memanggil REST API publik BMKG
+- **REST Client**  `api.php` memanggil REST API publik BMKG
   (`https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=...`) menggunakan cURL
   untuk mengambil data prakiraan cuaca.
-- **REST Server** — `api.php` sendiri menyediakan endpoint
+- **REST Server**  `api.php` sendiri menyediakan endpoint
   (`GET /api.php?adm4=<kode_wilayah>`) yang mengembalikan response JSON,
   yang kemudian dikonsumsi oleh frontend (`index.html`) menggunakan
   `fetch()`. Endpoint ini juga bisa dipanggil dari aplikasi lain (Postman,
@@ -43,9 +43,9 @@ Frontend (index.html)
 
 ## Struktur File
 
-- `index.html` — frontend sederhana (form input + tampilan hasil)
-- `api.php` — backend yang menjadi REST server sekaligus REST client
-- `README.md` — dokumen ini
+- `index.html`  frontend sederhana (form input + tampilan hasil)
+- `api.php`  backend yang menjadi REST server sekaligus REST client
+- `README.md`  dokumen ini
 
 ## Sumber Data
 
@@ -65,9 +65,9 @@ Wajib dicantumkan sebagai sumber data sesuai ketentuan BMKG.
 
 ## Panduan Submit Tugas
 
-1. **Source code** — upload folder ini ke GitHub (buat repository baru,
+1. **Source code**  upload folder ini ke GitHub (buat repository baru,
    push semua file), lalu salin link repository-nya.
-2. **Video demo** — rekam layar (screen record) singkat yang menunjukkan:
+2. **Video demo**  rekam layar (screen record) singkat yang menunjukkan:
    - Menjalankan server (`php -S localhost:8000`)
    - Membuka aplikasi di browser
    - Mengisi kode wilayah dan menekan tombol "Cek Cuaca"
